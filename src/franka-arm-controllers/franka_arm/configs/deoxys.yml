@@ -1,12 +1,12 @@
 PC:
   # NAME: irmak # These IP addresses should be modified properly
-  # IP: 100.82.146.36 
-  NAME: "grail"
-  IP: 100.126.30.132
+  # IP: 100.82.146.36
+  NAME: "ripl-d3"
+  IP: 128.61.43.84
 
 NUC:
-  NAME: "grail"
-  IP: 100.126.30.132
+  NAME: "ripl-d3"
+  IP: 128.61.43.84
   PUB_PORT: 5556
   SUB_PORT: 5557
   GRIPPER_PUB_PORT: 5558
