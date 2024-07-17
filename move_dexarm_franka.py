@@ -255,4 +255,3 @@ class DexArmControl():
 if __name__ == '__main__':
     dex_arm = DexArmControl()
     dex_arm.home_robot()
-    

@@ -4,7 +4,7 @@ import math
 import numpy as np
 import os
 import rospy
-from scipy.spatial.transform import Rotation 
+from scipy.spatial.transform import Rotation
 import tf
 import time
 import yaml
@@ -49,7 +49,7 @@ class Transformer(object):
             time.sleep(0.5)
 
     def record_and_publish(self):
-        message = Float64MultiArray() 
+        message = Float64MultiArray()
         message.data = []
         self.pub = rospy.Publisher(PUBLISHER_TOPIC, Float64MultiArray, queue_size=1)
 
@@ -60,7 +60,7 @@ class Transformer(object):
                 [-1/np.sqrt(2), -1/np.sqrt(2), 0, 0],
                 [0, 0, 1, 0.06], # The height of the allegro mount is 6cm
                 [0, 0, 0, 1]])
-            
+
             H_An_Ao = np.array(
                 [[0, 1, 0, 0],
                  [1, 0, 0, 0],
@@ -69,7 +69,7 @@ class Transformer(object):
             )
 
             H_An_R = H_Ao_R @ H_An_Ao
-            
+
             H_R_O  = self.robot_interface.last_eef_pose # Homo matrix that takes a point in robot's frme and moves to the origin's frame
             H_O_A =  np.linalg.inv(H_R_O)@np.linalg.inv(H_An_R)
 
@@ -79,11 +79,11 @@ class Transformer(object):
             g_x, g_y, g_z = G_A[0], G_A[1], G_A[2]
             # rotation_matrix, _ = self.robot_interface.last_eef_rot_and_pos
             # print('rotation_matrix: {}'.format(rotation_matrix))
-            # # Again, due to the joint limits of franka we rotate the rotation matrix of 
-            # # franka by -45 degrees 
-            # rotation_rot = Rotation.from_quat([0, 0, -np.sin(np.pi/8), np.cos(np.pi/8)])  
+            # # Again, due to the joint limits of franka we rotate the rotation matrix of
+            # # franka by -45 degrees
+            # rotation_rot = Rotation.from_quat([0, 0, -np.sin(np.pi/8), np.cos(np.pi/8)])
             # rotation_matrix = np.matmul(rotation_matrix, rotation_rot.as_matrix())
-            
+
             # gravity_vector = [0,0,9.8]
             # rotated_gravity_vector = np.matmul(gravity_vector, rotation_matrix)
 
@@ -98,9 +98,9 @@ class Transformer(object):
             self.pub.publish(message)
             self.Rate.sleep()
 
-            
+
 if __name__ == '__main__':
     t = Transformer()
-    
+
     print("Publishing the dynamic gravity vector for the end effector!")
     t.record_and_publish()

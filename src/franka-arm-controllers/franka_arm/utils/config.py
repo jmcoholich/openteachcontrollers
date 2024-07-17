@@ -7,7 +7,7 @@ def get_velocity_controller_config(config_root):
     controller_cfg = YamlConfig(
         os.path.join(config_root, "osc-pose-controller-velocity.yml")
     ).as_easydict()
-    controller_cfg = verify_controller_config(controller_cfg) 
+    controller_cfg = verify_controller_config(controller_cfg)
 
     return controller_cfg
 
@@ -15,6 +15,6 @@ def get_position_controller_config(config_root):
     controller_cfg = YamlConfig(
         os.path.join(config_root, "osc-pose-controller-position.yml")
     ).as_easydict()
-    controller_cfg = verify_controller_config(controller_cfg) 
+    controller_cfg = verify_controller_config(controller_cfg)
 
     return controller_cfg

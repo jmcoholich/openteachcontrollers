@@ -29,7 +29,7 @@ KINOVA_BOX_HANDLE_LIFTING_CART_HOME_VALUES = [-0.42580533,  0.28117454,  0.35571
 KINOVA_BOWL_PICKING_CART_HOME_VALUES = [-0.52456534,  0.21932657,  0.37987852,  0.04104819, -0.65619761, -0.02854434,  0.75293094]
 
 KINOVA_PLIER_PICKING_CART_HOME_VALUES = [-0.49514708,  0.29150361,  0.34026781, -0.07374543, -0.72189188, -0.04998896,  0.68624681]
-KINOVA_CARD_FLIPPING_CART_HOME_VALUES = [-0.5707984 ,  0.2903423 ,  0.31730247, -0.0505348 , -0.80014342, -0.02483405,  0.59715998] 
+KINOVA_CARD_FLIPPING_CART_HOME_VALUES = [-0.5707984 ,  0.2903423 ,  0.31730247, -0.0505348 , -0.80014342, -0.02483405,  0.59715998]
 KINOVA_CARD_TURNING_CART_HOME_VALUES = [-0.56546915,  0.28352877,  0.32529727, -0.04745373, -0.74813676, -0.02540322,  0.66135776]
 KINOVA_CUP_TURNING_CART_HOME_VALUES = [-0.5581823 ,  0.2904658 ,  0.34049535, -0.06296504, -0.72694546, -0.02468684,  0.68335658]
 KINOVA_PEG_INSERTION_CART_HOME_VALUES = [-0.51666868,  0.31732166,  0.29643977, -0.10299692, -0.71015126, -0.03510073,  0.69558954]
@@ -37,13 +37,13 @@ KINOVA_MINT_OPENING_CART_HOME_VALUES = [-0.56188184,  0.31665573,  0.31719872, -
 KINOVA_MINT_OPENING_LIFTED_CARD_HOME_VALUES = [-0.56115389,  0.31624374,  0.31479663, -0.07334466, -0.77505636, -0.03475262,  0.62665802] # These are pretty much the same as regular MINT opening but only starts from a bit upper
 KINOVA_MOUSE_SCROLLING_CART_HOME_VALUES = [-0.51619107,  0.33307174,  0.28894591, -0.07648595, -0.57457948, -0.07937531,  0.81099188]
 
-KINOVA_HOME_VALUES = KINOVA_HOME 
+KINOVA_HOME_VALUES = KINOVA_HOME
 KINOVA_HOME_VALUES_CART = KINOVA_CARD_FLIPPING_CART_HOME_VALUES
 
 ALLEGRO_ORIGINAL_HOME_VALUES = [
     0, -0.17453293, 0.78539816, 0.78539816,           # Index
     0, -0.17453293,  0.78539816,  0.78539816,         # Middle
-    0.08726646, -0.08726646, 0.87266463,  0.78539816, # Ring 
+    0.08726646, -0.08726646, 0.87266463,  0.78539816, # Ring
     1.04719755,  0.43633231,  0.26179939, 0.78539816  # Thumb
 ]
 
@@ -55,11 +55,11 @@ ALLEGRO_CUP_SLIPPING_HOME_VALUES = [ # This is used for BOWL PICKING as well
 ]
 
 ALLEGRO_BOTTLE_CAP_OPENING_HOME_VALUES = [ # This is used for BOOK_OPENING AS WELL - I think this could be used for BOX HANDLE LIFTING as well
-    -0.10406068960941592, 0.19625765888591587, 0.5455416026548555, 0.6413563160772814, # Index 
+    -0.10406068960941592, 0.19625765888591587, 0.5455416026548555, 0.6413563160772814, # Index
     -0.13881295376850777, 0.13003522437082457, 0.6107575764680238, 0.42471420968995055, # Middle
-    -0.19278830009506917, 0.1009857230372155, 0.5310970321033471, 0.446055473538483, # Ring 
+    -0.19278830009506917, 0.1009857230372155, 0.5310970321033471, 0.446055473538483, # Ring
     0.6771463953596024, 0.3493525152060263, 1.1241743903532158, 0.5125013678262919
-] 
+]
 
 ALLEGRO_GAMEPAD_HOME_VALUES = [
 	-0.16619228801773384, 0.32481266483797294, 0.8601691699986072, 0.5649435451227687,
@@ -102,7 +102,7 @@ class DexArmControl():
             rospy.init_node("dex_arm", disable_signals = True, anonymous = True)
         except:
             pass
-    
+
         self._init_allegro_hand_control()
         self._init_kinova_arm_control()
 
@@ -112,17 +112,17 @@ class DexArmControl():
 
         self.allegro_joint_state = None
         rospy.Subscriber(
-            ALLEGRO_JOINT_STATE_TOPIC, 
-            JointState, 
-            self._callback_allegro_joint_state, 
+            ALLEGRO_JOINT_STATE_TOPIC,
+            JointState,
+            self._callback_allegro_joint_state,
             queue_size = 1
         )
 
         self.allegro_commanded_joint_state = None
         rospy.Subscriber(
-            ALLEGRO_COMMANDED_JOINT_STATE_TOPIC, 
-            JointState, 
-            self._callback_allegro_commanded_joint_state, 
+            ALLEGRO_COMMANDED_JOINT_STATE_TOPIC,
+            JointState,
+            self._callback_allegro_commanded_joint_state,
             queue_size = 1
         )
 
@@ -131,9 +131,9 @@ class DexArmControl():
 
         self.kinova_joint_state = None
         rospy.Subscriber(
-            KINOVA_JOINT_STATE_TOPIC, 
-            JointState, 
-            self._callback_kinova_joint_state, 
+            KINOVA_JOINT_STATE_TOPIC,
+            JointState,
+            self._callback_kinova_joint_state,
             queue_size = 1
         )
 
@@ -188,7 +188,7 @@ class DexArmControl():
             timestamp = raw_joint_state.header.stamp.secs + (raw_joint_state.header.stamp.nsecs * 1e-9)
         )
         return joint_state
-        
+
     def get_hand_position(self):
         if self.allegro_joint_state is None:
             return None
@@ -247,13 +247,13 @@ class DexArmControl():
     def get_arm_position(self):
         if self.kinova_joint_state is None:
             return None
-        
+
         return np.array(self.kinova_joint_state.position, dtype = np.float32)
 
     def get_arm_velocity(self):
         if self.kinova_joint_state is None:
             return None
-        
+
         return np.array(self.kinova_joint_state.velocity, dtype = np.float32)
 
     def get_arm_torque(self):

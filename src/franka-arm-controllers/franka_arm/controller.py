@@ -73,21 +73,21 @@ class FrankaController:
         current_quat, current_pos = self.robot_interface.last_eef_quat_and_pos
         current_axis_angle = transform_utils.quat2axisangle(current_quat)
         return current_pos, current_axis_angle
-    
+
     def get_pose(self):
         pose = self.robot_interface.last_eef_pose
         return pose
 
     def get_joint_position(self): # NOTE: I am not sure if this is the proper way
         return self.robot_interface.last_q
-    
+
     def joint_movement(self, desired_joint_pos):
         return move_joints(
             robot_interface = self.robot_interface,
-            desired_joint_pos = desired_joint_pos, 
+            desired_joint_pos = desired_joint_pos,
             controller_cfg = None # This will automatically be assigned to joint control
         )
-    
+
     def cartesian_control(self, cartesian_pose): # cartesian_pose: (7,) (pos:quat) - pos (3,) translational pose, quat (4,) quaternion
 
         cartesian_pose = np.array(cartesian_pose, dtype=np.float32)
@@ -102,11 +102,11 @@ class FrankaController:
         if np.dot(target_quat, current_quat) < 0.0:
             current_quat = -current_quat
         quat_diff = transform_utils.quat_distance(target_quat, current_quat)
-        axis_angle_diff = transform_utils.quat2axisangle(quat_diff)            
+        axis_angle_diff = transform_utils.quat2axisangle(quat_diff)
 
-        action_pos = pose_error[:3] * TRANSLATIONAL_POSE_VELOCITY_SCALE 
+        action_pos = pose_error[:3] * TRANSLATIONAL_POSE_VELOCITY_SCALE
         action_axis_angle = axis_angle_diff.flatten() * ROTATIONAL_POSE_VELOCITY_SCALE
-        
+
         action_pos, _ = transform_utils.clip_translation(action_pos, TRANSLATION_VELOCITY_LIMIT)
         action_axis_angle = np.clip(action_axis_angle, -ROTATION_VELOCITY_LIMIT, ROTATION_VELOCITY_LIMIT)
         action = action_pos.tolist() + action_axis_angle.tolist()

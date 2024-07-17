@@ -1,5 +1,5 @@
 import math
-from scipy.spatial.transform import Rotation as R 
+from scipy.spatial.transform import Rotation as R
 def euler2quat(euler_pos):
     # tx_, ty_, tz_ = euler_pos[0:3]
     # sx = math.sin(0.5 * tx_)
