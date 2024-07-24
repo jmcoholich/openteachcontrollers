@@ -2,15 +2,15 @@ PC:
   # NAME: irmak # These IP addresses should be modified properly
   # IP: 100.82.146.36
   NAME: "ripl-d3"
-  IP: 128.61.43.84
+  IP: 172.16.0.1
 
 NUC:
-  NAME: "ripl-d3"
-  IP: 128.61.43.84
+  NAME: "ripl-nuc"
+  IP: 172.16.0.3
   PUB_PORT: 5556
-  SUB_PORT: 5557
+  SUB_PORT: 5555
   GRIPPER_PUB_PORT: 5558
-  GRIPPER_SUB_PORT: 5559
+  GRIPPER_SUB_PORT: 5557
 
 # TODO: Write a script to change everything in the nuc
 
