@@ -33,12 +33,12 @@ class Transformer(object):
         # Initialize the franka interface
         # Change the yaml file to have a random pub port
         record_file = os.path.join(CONFIG_NUC_ROOT, 'record_deoxys.yml')
-        with open(record_file) as f:
-            record_yaml = yaml.safe_load(f)
-        record_yaml['NUC']['SUB_PORT'] += 2
-        record_yaml['NUC']['GRIPPER_SUB_PORT'] += 2
-        with open(record_file, 'w') as f:
-            yaml.dump(record_yaml, f)
+        # with open(record_file) as f:
+        #     record_yaml = yaml.safe_load(f)
+        # record_yaml['NUC']['SUB_PORT'] += 2
+        # record_yaml['NUC']['GRIPPER_SUB_PORT'] += 2
+        # with open(record_file, 'w') as f:
+        #     yaml.dump(record_yaml, f)
 
         self.robot_interface = FrankaInterface(
             record_file, use_visualizer=False

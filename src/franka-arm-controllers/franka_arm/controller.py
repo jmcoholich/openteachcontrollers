@@ -18,15 +18,14 @@ from .constants import *
 class FrankaController:
     def __init__(self, record=False):
         if record:
-
-            # Change the yaml file to have a random pub port
             record_file = os.path.join(CONFIG_ROOT, 'record_deoxys.yml')
-            with open(record_file) as f:
-                record_yaml = yaml.safe_load(f)
-            record_yaml['NUC']['SUB_PORT'] += 2
-            record_yaml['NUC']['GRIPPER_SUB_PORT'] += 2
-            with open(record_file, 'w') as f:
-                yaml.dump(record_yaml, f)
+            # # Change the yaml file to have a random pub port
+            # with open(record_file) as f:
+            #     record_yaml = yaml.safe_load(f)
+            # record_yaml['NUC']['SUB_PORT'] += 2
+            # record_yaml['NUC']['GRIPPER_SUB_PORT'] += 2
+            # with open(record_file, 'w') as f:
+            #     yaml.dump(record_yaml, f)
 
             self.robot_interface = FrankaInterface(
                 record_file, use_visualizer=False, control_freq=CONTROL_FREQ,
@@ -87,6 +86,10 @@ class FrankaController:
             desired_joint_pos = desired_joint_pos,
             controller_cfg = None # This will automatically be assigned to joint control
         )
+
+    def set_gripper_position(self, position):
+        print('SETTING GRIPPER POSITION')
+        self.robot_interface.gripper_control(position)
 
     def cartesian_control(self, cartesian_pose): # cartesian_pose: (7,) (pos:quat) - pos (3,) translational pose, quat (4,) quaternion
 
