@@ -91,6 +91,9 @@ class FrankaController:
         print('SETTING GRIPPER POSITION')
         self.robot_interface.gripper_control(position)
 
+    def get_gripper_position(self):
+        return self.robot_interface.last_gripper_q
+
     def cartesian_control(self, cartesian_pose): # cartesian_pose: (7,) (pos:quat) - pos (3,) translational pose, quat (4,) quaternion
 
         cartesian_pose = np.array(cartesian_pose, dtype=np.float32)
