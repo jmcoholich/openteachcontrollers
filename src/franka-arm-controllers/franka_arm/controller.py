@@ -78,7 +78,11 @@ class FrankaController:
         return pose
 
     def get_joint_position(self): # NOTE: I am not sure if this is the proper way
-        return self.robot_interface.last_q
+        if self.robot_interface._history_actions:
+            action = self.robot_interface._history_actions[-1]
+        else:
+            action = [None] * 7
+        return self.robot_interface.last_q, action
 
     def joint_movement(self, desired_joint_pos):
         return move_joints(
@@ -92,7 +96,7 @@ class FrankaController:
         self.robot_interface.gripper_control(position)
 
     def get_gripper_position(self):
-        return self.robot_interface.last_gripper_q
+        return self.robot_interface.last_gripper_q, self.robot_interface.last_gripper_action
 
     def cartesian_control(self, cartesian_pose): # cartesian_pose: (7,) (pos:quat) - pos (3,) translational pose, quat (4,) quaternion
 
