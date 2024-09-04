@@ -29,7 +29,7 @@ class FrankaController:
 
             self.robot_interface = FrankaInterface(
                 record_file, use_visualizer=False, control_freq=CONTROL_FREQ,
-                state_freq=STATE_FREQ
+                state_freq=STATE_FREQ, listen_only=True
             )
         else:
             self.robot_interface = FrankaInterface(
@@ -96,7 +96,11 @@ class FrankaController:
         self.robot_interface.gripper_control(position)
 
     def get_gripper_position(self):
-        return self.robot_interface.last_gripper_q, self.robot_interface.last_gripper_action
+        if self.robot_interface._gripper_cmd_buffer:
+            action = self.robot_interface._gripper_cmd_buffer[-1]
+        else:
+            action = None
+        return self.robot_interface.last_gripper_q, action
 
     def cartesian_control(self, cartesian_pose): # cartesian_pose: (7,) (pos:quat) - pos (3,) translational pose, quat (4,) quaternion
 
