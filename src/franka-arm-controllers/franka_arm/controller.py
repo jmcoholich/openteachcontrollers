@@ -78,10 +78,10 @@ class FrankaController:
         return pose
 
     def get_joint_position(self): # NOTE: I am not sure if this is the proper way
-        if self.robot_interface._history_actions:
-            action = self.robot_interface._history_actions[-1]
+        if self.robot_interface._cmd_buffer:
+            action = self.robot_interface._cmd_buffer[-1]
         else:
-            action = [None] * 7
+            action = [None] * 6
         return self.robot_interface.last_q, action
 
     def joint_movement(self, desired_joint_pos):
