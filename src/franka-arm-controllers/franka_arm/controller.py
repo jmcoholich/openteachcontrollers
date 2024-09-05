@@ -29,7 +29,7 @@ class FrankaController:
 
             self.robot_interface = FrankaInterface(
                 record_file, use_visualizer=False, control_freq=CONTROL_FREQ,
-                state_freq=STATE_FREQ, listen_only=True
+                state_freq=STATE_FREQ, listen_cmds=True, no_control=True
             )
         else:
             self.robot_interface = FrankaInterface(

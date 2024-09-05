@@ -41,7 +41,7 @@ class Transformer(object):
         #     yaml.dump(record_yaml, f)
 
         self.robot_interface = FrankaInterface(
-            record_file, use_visualizer=False
+            record_file, use_visualizer=False, no_control=True
         )
 
         while self.robot_interface.state_buffer_size == 0:
