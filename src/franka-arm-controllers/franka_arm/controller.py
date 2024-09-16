@@ -77,12 +77,25 @@ class FrankaController:
         pose = self.robot_interface.last_eef_pose
         return pose
 
-    def get_joint_position(self): # NOTE: I am not sure if this is the proper way
-        if self.robot_interface._cmd_buffer:
-            action = self.robot_interface._cmd_buffer[-1]
-        else:
-            action = [None] * 6
-        return self.robot_interface.last_q, action
+    def get_joint_position(self):
+        """This function is overloaded and returns pretty much all data we need.
+        """
+        return (
+            self.robot_interface.last_q,
+            self.robot_interface.last_dq,
+            self.robot_interface.last_q_d,
+            self.robot_interface.last_dq_d,
+            self.robot_interface.last_ddq_d,
+            self.robot_interface.last_tau_J,
+            self.robot_interface.last_dtau_J,
+            self.robot_interface.last_tau_J_d,
+            self.robot_interface.last_tau_ext_hat_filtered,
+            self.robot_interface.last_eef_pose,  # 4x4 homo mat, no more messing with quaternions
+            self.robot_interface.last_eef_pose_d,
+            self.robot_interface.last_F_T_EE,
+            self.robot_interface.last_F_T_NE,
+            # self.robot_interface.last_cmd,
+            )
 
     def joint_movement(self, desired_joint_pos):
         return move_joints(
