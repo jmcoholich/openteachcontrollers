@@ -97,6 +97,9 @@ class FrankaController:
             # self.robot_interface.last_cmd,
             )
 
+    def get_arm_tcp_commands(self):
+        return self.robot_interface.last_arm_tcp_command
+
     def joint_movement(self, desired_joint_pos):
         return move_joints(
             robot_interface = self.robot_interface,
