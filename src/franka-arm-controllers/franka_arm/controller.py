@@ -13,10 +13,12 @@ from deoxys.utils.log_utils import get_deoxys_example_logger
 
 from franka_arm.utils import move_joints, get_position_controller_config, get_velocity_controller_config, euler2quat
 
-from .constants import *
+from constants import *
 
 class FrankaController:
-    def __init__(self, record=False):
+    def __init__(self, record=False, control_freq=None):
+        if control_freq is None:
+            control_freq = CONTROL_FREQ
         if record:
             record_file = os.path.join(CONFIG_ROOT, 'record_deoxys.yml')
             # # Change the yaml file to have a random pub port
@@ -28,13 +30,13 @@ class FrankaController:
             #     yaml.dump(record_yaml, f)
 
             self.robot_interface = FrankaInterface(
-                record_file, use_visualizer=False, control_freq=CONTROL_FREQ,
+                record_file, use_visualizer=False, control_freq=control_freq,
                 state_freq=STATE_FREQ, listen_cmds=True, no_control=True
             )
         else:
             self.robot_interface = FrankaInterface(
                 os.path.join(CONFIG_ROOT, 'deoxys.yml'), use_visualizer=False,
-                control_freq = CONTROL_FREQ,
+                control_freq=control_freq,
                 state_freq=STATE_FREQ
             )
 
@@ -108,7 +110,6 @@ class FrankaController:
         )
 
     def set_gripper_position(self, position):
-        print('SETTING GRIPPER POSITION')
         self.robot_interface.gripper_control(position)
 
     def get_gripper_position(self):
