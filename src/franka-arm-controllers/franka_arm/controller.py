@@ -6,6 +6,7 @@ import time
 import numpy as np
 import random
 import yaml
+import sys
 
 from scipy.spatial.transform import Rotation
 from deoxys.franka_interface import FrankaInterface
@@ -14,6 +15,10 @@ from deoxys.utils.log_utils import get_deoxys_example_logger
 
 from franka_arm.utils import move_joints, get_position_controller_config, get_velocity_controller_config, euler2quat
 
+
+# constants_path = f"{os.path.expanduser('~')}/openteachcontrollers/src/franka-arm-controllers/franka_arm/constants.py"
+# sys.path.append(constants_path)
+# from constants import *
 from .constants import *
 
 
@@ -51,7 +56,7 @@ class FrankaController:
         )
 
         self.logger = get_deoxys_example_logger()
-        self.deoxys_obs_cmd_history = []
+        self.deoxys_obs_cmd_history = {}
 
         print("robot_interface.state_buffer_size", self.robot_interface.state_buffer_size)
 
@@ -151,20 +156,32 @@ class FrankaController:
         action_axis_angle = np.clip(action_axis_angle, -ROTATION_VELOCITY_LIMIT, ROTATION_VELOCITY_LIMIT)
         action = action_pos.tolist() + action_axis_angle.tolist()
 
-        deoxys_obs_cmd = {
-            'arm_action': action,
-            'gripper_action': gripper_cmd,
-            'gripper_state': self.robot_interface.last_gripper_q,
-            'eef_quat': current_quat,
-            'eef_pos': current_pos,
-            'eef_pose': current_mat,
-            'joint_pos': self.robot_interface.last_q,
-            'controller_type': self.controller_type,
-            'controller_cfg': self.velocity_controller_cfg,
-            'timestamp': time.time(),
-            'index': len(self.deoxys_obs_cmd_history),
-        }
-        self.deoxys_obs_cmd_history.append(deoxys_obs_cmd)
+        if not self.deoxys_obs_cmd_history:
+            self.deoxys_obs_cmd_history = {
+                'cartesian_pose_cmd': [cartesian_pose],
+                'arm_action': [action],
+                'gripper_action': [gripper_cmd],
+                'gripper_state': [self.robot_interface.last_gripper_q],
+                'eef_quat': [current_quat],
+                'eef_pos': [current_pos],
+                'eef_pose': [current_mat],
+                'joint_pos': [self.robot_interface.last_q],
+                'controller_type': self.controller_type,
+                'controller_cfg': self.velocity_controller_cfg,
+                'timestamp': [time.time()],
+                'index': [0],
+            }
+        else:
+            self.deoxys_obs_cmd_history['cartesian_pose_cmd'].append(cartesian_pose)
+            self.deoxys_obs_cmd_history['arm_action'].append(action)
+            self.deoxys_obs_cmd_history['gripper_action'].append(gripper_cmd)
+            self.deoxys_obs_cmd_history['gripper_state'].append(self.robot_interface.last_gripper_q)
+            self.deoxys_obs_cmd_history['eef_quat'].append(current_quat)
+            self.deoxys_obs_cmd_history['eef_pos'].append(current_pos)
+            self.deoxys_obs_cmd_history['eef_pose'].append(current_mat)
+            self.deoxys_obs_cmd_history['joint_pos'].append(self.robot_interface.last_q)
+            self.deoxys_obs_cmd_history['timestamp'].append(time.time())
+            self.deoxys_obs_cmd_history['index'].append(len(self.deoxys_obs_cmd_history['index']))
 
         self.robot_interface.control(
             controller_type=self.controller_type,
